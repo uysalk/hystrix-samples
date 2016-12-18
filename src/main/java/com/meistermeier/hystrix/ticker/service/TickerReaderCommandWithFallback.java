@@ -13,9 +13,9 @@ public class TickerReaderCommandWithFallback extends HystrixCommand<Ticker> {
     private final TickerReader reader;
 
     public TickerReaderCommandWithFallback(TickerReader reader) {
-        super(withGroupKey(asKey("TickerReaderCommand")).andCommandPropertiesDefaults(HystrixCommandProperties.Setter()
-                        .withCircuitBreakerRequestVolumeThreshold(2)
-                        .withMetricsRollingStatisticalWindowInMilliseconds(1000))
+        super(withGroupKey(asKey("TickerReaderCommandWithFallback")).andCommandPropertiesDefaults(HystrixCommandProperties.Setter()
+                        .withCircuitBreakerRequestVolumeThreshold(20)
+                        .withMetricsRollingStatisticalWindowInMilliseconds(10000))
         );
         this.reader = reader;
     }

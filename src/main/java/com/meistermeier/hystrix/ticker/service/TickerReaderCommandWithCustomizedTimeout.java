@@ -10,13 +10,13 @@ import static com.netflix.hystrix.HystrixCommandGroupKey.Factory.asKey;
 
 public class TickerReaderCommandWithCustomizedTimeout extends HystrixCommand<Ticker> {
 
-    private static final int TIMEOUT_IN_MILLIS = 200;
+    private static final int TIMEOUT_IN_MILLIS = 1000;
     private final TickerReader reader;
 
     public TickerReaderCommandWithCustomizedTimeout(TickerReader reader) {
         super(withGroupKey(asKey("TickerReaderCommand")).andCommandPropertiesDefaults(
                 HystrixCommandProperties.Setter()
-                        .withExecutionIsolationThreadTimeoutInMilliseconds(TIMEOUT_IN_MILLIS)));
+                        .withExecutionTimeoutInMilliseconds(TIMEOUT_IN_MILLIS)));
         this.reader = reader;
     }
 
@@ -27,6 +27,7 @@ public class TickerReaderCommandWithCustomizedTimeout extends HystrixCommand<Tic
 
     @Override
     protected Ticker getFallback() {
-        return null;
+
+        return new Ticker ("Fallback");
     }
 }

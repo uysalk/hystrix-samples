@@ -16,7 +16,15 @@ public class LongRunningTickerReader implements TickerReader {
         ticker.getHeadlines().add("Snow causes white landscape.");
         ticker.getHeadlines().add("Foo news has a new ticker.");
         try {
-            Thread.sleep(FIVE_SECONDS_IN_MILLIS);
+            if (Math.random()<0.5)
+             Thread.sleep(FIVE_SECONDS_IN_MILLIS);
+            else{
+                if (Math.random()<0.3)
+                    throw new RuntimeException("whole internet is gone. you're doomed.");
+
+                Thread.sleep(900);
+            }
+
         } catch (InterruptedException e) {
             // today you may be ignored
         }
