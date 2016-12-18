@@ -17,7 +17,7 @@ public class SimpleTickerService implements TickerService {
     @Override
     public List<Ticker> getTickers() {
         final List<Ticker> tickers = new ArrayList<>();
-        tickers.add(reader.grabNews());
+        tickers.add(reader.getTicker());
         return tickers;
     }
 }

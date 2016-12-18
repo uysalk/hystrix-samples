@@ -22,7 +22,7 @@ public class TickerReaderCommandWithCustomizedTimeout extends HystrixCommand<Tic
 
     @Override
     protected Ticker run() throws Exception {
-        return reader.grabNews();
+        return reader.getTicker();
     }
 
     @Override

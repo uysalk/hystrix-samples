@@ -17,7 +17,7 @@ public class TickerServiceWithFallbackCommand implements TickerService {
     @Override
     public List<Ticker> getTickers() {
         List<Ticker> tickers = new ArrayList<>();
-        tickers.add(new TickerReaderCommandWithFallback(reader).execute());
+        tickers.add(new TickerReaderCommand(reader).execute());
         return tickers;
     }
 }

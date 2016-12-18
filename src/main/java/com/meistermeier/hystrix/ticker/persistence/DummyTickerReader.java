@@ -5,7 +5,7 @@ import com.meistermeier.hystrix.ticker.model.Ticker;
 public class DummyTickerReader implements TickerReader {
 
     @Override
-    public Ticker grabNews() {
+    public Ticker getTicker() {
         return generateFooNews();
     }
 

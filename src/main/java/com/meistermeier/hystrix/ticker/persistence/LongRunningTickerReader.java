@@ -7,7 +7,7 @@ public class LongRunningTickerReader implements TickerReader {
     private static final int FIVE_SECONDS_IN_MILLIS = 5000;
 
     @Override
-    public Ticker grabNews() {
+    public Ticker getTicker() {
         return generateFooNews();
     }
 

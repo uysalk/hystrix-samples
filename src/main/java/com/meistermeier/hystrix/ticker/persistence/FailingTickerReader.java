@@ -5,18 +5,15 @@ import com.meistermeier.hystrix.ticker.model.Ticker;
 public class FailingTickerReader implements TickerReader {
 
     @Override
-    public Ticker grabNews() {
-        if (Math.random() < 0.5)
+    public Ticker getTicker() {
+        if (Math.random() < 0.2)
             throw new RuntimeException("whole internet is gone. you're doomed.");
         else {
             try {
-                if (Math.random() < 0.5)
-                    Thread.sleep(1000);
-                else
-
-                    Thread.sleep(100);
+                if (Math.random() < 0.3)
+                    Thread.sleep(10000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+
             }
 
             return new Ticker("Foo News");

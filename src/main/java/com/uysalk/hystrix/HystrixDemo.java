@@ -3,7 +3,7 @@ package com.uysalk.hystrix;
 import com.meistermeier.hystrix.ticker.persistence.FailingTickerReader;
 import com.meistermeier.hystrix.ticker.persistence.LongRunningTickerReader;
 import com.meistermeier.hystrix.ticker.service.TickerReaderCommandWithCustomizedTimeout;
-import com.meistermeier.hystrix.ticker.service.TickerReaderCommandWithFallback;
+import com.meistermeier.hystrix.ticker.service.TickerReaderCommand;
 import com.meistermeier.hystrix.ticker.service.TickerServiceWithFallbackCommand;
 import com.meistermeier.hystrix.ticker.service.TickerServiceWithTimeoutCommand;
 import com.netflix.hystrix.HystrixCommandKey;
@@ -25,19 +25,24 @@ public class HystrixDemo {
 
     public static void main(String args[]) {
         new HystrixDemo().startDemo();
+        System.exit(0);
     }
 
 
     public void startDemo() {
         startMetricsMonitor();
-        while (true) {
+        int i = 0;
+        long start = System.currentTimeMillis();
+        while (i<1000) {
             runSimulation();
             try {
-                Thread.sleep(500);
-            } catch (Exception e) {
-                // ignore
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
             }
+            i++;
         }
+
+        System.out.println (System.currentTimeMillis() - start);
     }
 
     public void runSimulation() {
@@ -49,7 +54,6 @@ public class HystrixDemo {
                 try {
 
                     new TickerServiceWithFallbackCommand(new FailingTickerReader()).getTickers();
-                    new TickerServiceWithTimeoutCommand(new LongRunningTickerReader()).getTickers();
 
                     System.out.println("Request => " + HystrixRequestLog.getCurrentRequest().getExecutedCommandsAsString());
                 } catch (Exception e) {
@@ -68,24 +72,19 @@ public class HystrixDemo {
             @Override
             public void run() {
                 while (true) {
-
-
-                    // wait 5 seconds on each loop
                     try {
                         Thread.sleep(5000);
                     } catch (Exception e) {
                         // ignore
                     }
 
-                    HystrixCommandMetrics tickerReaderCommandWithCustomizedTimeoutMetrics = HystrixCommandMetrics.getInstance(HystrixCommandKey.Factory.asKey(TickerReaderCommandWithCustomizedTimeout.class.getSimpleName()));
-                    HystrixCommandMetrics tickerReaderCommandWithFallbackMetrics = HystrixCommandMetrics.getInstance(HystrixCommandKey.Factory.asKey(TickerReaderCommandWithFallback.class.getSimpleName()));
+                    HystrixCommandMetrics tickerReaderCommand= HystrixCommandMetrics.getInstance(HystrixCommandKey.Factory.asKey(TickerReaderCommand.class.getSimpleName()));
 
                     // print out metrics
                     StringBuilder out = new StringBuilder();
                     out.append("\n");
                     out.append("#####################################################################################").append("\n");
-                    out.append("# TickerReaderCommand: " + getStatsStringFromMetrics(tickerReaderCommandWithCustomizedTimeoutMetrics)).append("\n");
-                    out.append("# FallbackCommand: " + getStatsStringFromMetrics(tickerReaderCommandWithFallbackMetrics)).append("\n");
+                    out.append("# TickerReaderCommand: " + getStatsStringFromMetrics(tickerReaderCommand)).append("\n");
                      out.append("#####################################################################################").append("\n");
                     System.out.println(out.toString());
                 }

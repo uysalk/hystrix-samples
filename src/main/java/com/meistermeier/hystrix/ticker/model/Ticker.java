@@ -9,6 +9,13 @@ public class Ticker {
 
     private final List<String> headlines = new ArrayList<>();
 
+    @Override
+    public String toString() {
+        return "Ticker{" +
+                "name='" + name + '\'' +
+                '}';
+    }
+
     public Ticker(String name) {
         this.name = name;
     }
